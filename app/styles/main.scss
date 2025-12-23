@@ -1,0 +1,27 @@
+$primary-bg: #f4f7f6;
+
+
+.board {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  padding: 20px;
+  background-color: $primary-bg;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.app-container {
+  background-color: $primary-bg;
+  h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 28px;
+    padding: 20px;
+  }
+}
+

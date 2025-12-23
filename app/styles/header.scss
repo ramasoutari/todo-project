@@ -1,0 +1,66 @@
+$primary-bg: #f4f7f6;
+
+.app-header {
+  @apply w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 shadow-lg;
+  background-color: $primary-bg;
+  margin-bottom: 50px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  .header-content {
+    @apply flex items-center justify-between px-6 py-4;
+    max-width: 1800px;
+    margin: 0 auto;
+
+    @media (max-width: 768px) {
+      @apply flex-col gap-4 py-5;
+    }
+  }
+
+  .header-left {
+    @apply flex items-center gap-4;
+
+    .header-icon {
+      @apply text-white;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      font-size: 32px;
+    }
+
+    .header-title {
+      h1 {
+        @apply text-2xl font-bold text-white m-0;
+        letter-spacing: -0.5px;
+
+        @media (max-width: 768px) {
+          @apply text-xl;
+        }
+      }
+
+      .header-subtitle {
+        @apply text-sm text-white/80 m-0 mt-1;
+
+        @media (max-width: 768px) {
+          @apply text-xs;
+        }
+      }
+    }
+  }
+
+  .header-right {
+    .btn-language {
+      @apply flex  gap-1;
+    }
+  }
+}
+
+// RTL Support
+[dir="rtl"] {
+  .header-content {
+    direction: rtl;
+  }
+
+  .header-left {
+    flex-direction: row-reverse;
+  }
+}

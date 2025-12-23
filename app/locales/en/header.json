@@ -1,0 +1,11 @@
+{
+  "title": "Task Manager",
+  "subtitle": "Organize your workflow efficiently",
+  "addTask": "Add Task",
+  "switchLanguage": "العربية",
+   "switch_language_title": "Switch Language",
+    "messageToArabic": "Are you sure you want to switch to Arabic? This will reload the page content.",
+    "messageToEnglish": "Are you sure you want to switch to English? This will reload the page content.",
+    "switch": "Switch",
+    "cancel": "Cancel"
+}

@@ -1,0 +1,10 @@
+{
+  "create": "Create Task",
+  "edit": "Edit Task",
+  "delete": "Delete Task",
+  "title": "Title",
+  "description": "Description",
+  "status": "Status",
+  "priority": "Priority",
+  "dueDate": "Due Date"
+}

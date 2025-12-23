@@ -1,0 +1,66 @@
+$shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+$in-progress-color: #ce70ea;
+$todo-color: #14131370;
+$done-color: #5fee6b;
+
+.column {
+  @apply w-1/4 min-w-[400px] p-4 flex flex-col;
+  height: calc(100vh - 200px);
+
+  @media (max-width: 768px) {
+    @apply w-[90%];
+  }
+
+  .card-title {
+    @apply max-h-[60px] flex items-center p-5 mb-8 text-white rounded-lg flex-shrink-0;
+
+    &--todo {
+      background-color: $todo-color;
+    }
+
+    &--in-progress {
+      background-color: $in-progress-color;
+    }
+
+    &--done {
+      background-color: $done-color;
+    }
+  }
+
+  .count-dot {
+    @apply inline-flex items-center justify-center w-6 h-6 
+           bg-white rounded-full text-sm font-semibold 
+           text-gray-700 mt-4;
+  }
+
+  .task-list {
+    @apply flex flex-col gap-10 p-2.5 overflow-y-auto overflow-x-hidden;
+
+    & {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
+    }
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.25);
+      border-radius: 999px;
+      transition: background-color 0.2s ease;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  .empty-msg {
+    @apply text-gray-500 text-center text-sm italic;
+  }
+}

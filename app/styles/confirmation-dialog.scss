@@ -1,0 +1,80 @@
+
+
+
+.confirmation-dialog {
+  @apply fixed inset-0 z-50 flex items-center justify-center;
+
+  &__backdrop {
+    @apply absolute inset-0 bg-black bg-opacity-50;
+  }
+
+  &__modal {
+    @apply relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4;
+    animation: slideIn 0.3s ease-out;
+    
+    @media (max-width: 640px) {
+      @apply mx-3 p-4;
+    }
+  }
+
+  &__content {
+    @apply mb-4;
+  }
+
+  &__title {
+    @apply text-lg font-semibold text-gray-900;
+  }
+
+  &__message {
+    @apply mt-2 text-sm text-gray-600  break-words;
+    line-height: 1.5;
+  }
+
+  &__actions {
+    @apply flex justify-end gap-2;
+    
+    @media (max-width: 640px) {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+  }
+
+  &__button {
+    @apply px-4 py-2 text-sm font-medium rounded-md;
+    
+    &--cancel {
+      @apply text-gray-700 bg-gray-100 hover:bg-gray-200;
+      
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+    }
+    
+    &--confirm {
+      @apply text-white bg-red-600 hover:bg-red-700;
+      
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(220, 38, 38, 0.3);
+      }
+      
+    }
+    
+    @media (max-width: 640px) {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

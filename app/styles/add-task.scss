@@ -1,0 +1,29 @@
+.add-task-form {
+  @apply flex gap-2.5 justify-center mb-7.5 px-5;
+
+  .char-count {
+    @apply text-gray-500 text-xs;
+  }
+
+  input {
+    @apply px-3.75 py-2.5 border-[3px] border-gray-400 rounded-lg w-full max-w-[300px] focus:outline-none focus:border-blue-600;
+
+    transition: border-color 0.3s;
+  }
+
+  button {
+    @apply px-5 py-2.5 bg-blue-400/60 text-white rounded-lg cursor-pointer whitespace-nowrap;
+
+    &:hover {
+      background-color: darken(#718eaf, 2%);
+    }
+  }
+
+  @media (max-width: 600px) {
+    @apply flex-col;
+
+    input {
+      @apply max-w-none;
+    }
+  }
+}
