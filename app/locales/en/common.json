@@ -1,8 +1,9 @@
 {
+  "confirm_removal": "Confirm Removal",
   "buttons": {
     "save": "Save",
     "cancel": "Cancel",
-    "delete": "Delete",
+    "remove": "Delete",
     "edit": "Edit",
     "create": "Create"
   },

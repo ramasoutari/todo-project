@@ -7,5 +7,7 @@
   "description": "الوصف",
   "status": "الحالة",
   "priority": "الأولوية",
-  "dueDate": "تاريخ الاستحقاق"
+  "dueDate": "تاريخ الاستحقاق",
+    "confirm_removal_message": "هل أنت متأكد من إزالة {{title}}؟ لا يمكن التراجع عن هذا الإجراء"
+
 }

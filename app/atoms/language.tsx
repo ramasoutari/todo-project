@@ -1,9 +1,8 @@
 import { atom } from 'jotai';
 import { translations, type Language, type TranslationNamespace } from '../config/translations';
 
-// Helper function to safely access localStorage
 const getInitialLanguage = (): Language => {
-  if (typeof window === 'undefined') return 'en'; // SSR fallback
+  if (typeof window === 'undefined') return 'en';
   
   const saved = localStorage.getItem("language");
   return (saved === 'en' || saved === 'ar') ? saved : 'en';
@@ -14,16 +13,19 @@ export const isLoading = atom(false);
 export const showConfirmation = atom(false);
 export const pendingLanguage = atom<Language | null>(null);
 
+// Updated t atom with interpolation support
 export const t = atom((get) => {
   const language = get(currentlanguage);
   
-  return (key: string): string => {
+  return (key: string, params?: Record<string, any>): string => {
     const [namespace, ...pathParts] = key.split(":");
 
     if (!pathParts.length) {
-      console.warn(
-        `Translation key "${key}" is missing namespace. Use format "namespace:key"`
-      );
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(
+          `Translation key "${key}" is missing namespace. Use format "namespace:key"`
+        );
+      }
       return key;
     }
 
@@ -35,7 +37,9 @@ export const t = atom((get) => {
     const namespaceTranslations = langTranslations[namespace as TranslationNamespace];
 
     if (!namespaceTranslations) {
-      console.warn(`Namespace "${namespace}" not found for language: ${language}`);
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(`Namespace "${namespace}" not found for language: ${language}`);
+      }
       return key;
     }
 
@@ -45,12 +49,31 @@ export const t = atom((get) => {
       if (value && typeof value === "object" && k in value) {
         value = value[k];
       } else {
-        console.warn(`Translation not found: ${key} for language: ${language}`);
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(`Translation not found: ${key} for language: ${language}`);
+        }
         return key;
       }
     }
 
-    return typeof value === "string" ? value : key;
+    if (typeof value !== "string") return key;
+
+    // Apply interpolation if params are provided
+    if (params) {
+      return value.replace(/\{\{(\w+(?:\.\w+)*)\}\}/g, (match, path) => {
+        // Support nested properties like {{task.title}} or {{user.name}}
+        const pathKeys = path.split('.');
+        let result: any = params;
+        
+        for (const pk of pathKeys) {
+          result = result?.[pk];
+        }
+        
+        return result !== undefined ? String(result) : match;
+      });
+    }
+
+    return value;
   };
 });
 

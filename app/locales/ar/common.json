@@ -1,8 +1,9 @@
 {
+  "confirm_removal": "تاكيد الحذف",
   "buttons": {
     "save": "حفظ",
     "cancel": "إلغاء",
-    "delete": "حذف",
+    "remove": "حذف",
     "edit": "تعديل",
     "create": "إنشاء"
   },

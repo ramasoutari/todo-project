@@ -6,5 +6,6 @@
   "description": "Description",
   "status": "Status",
   "priority": "Priority",
-  "dueDate": "Due Date"
+  "dueDate": "Due Date",
+  "confirm_removal_message": "Are you sure you want to remove {{title}}? This action cannot be undone"
 }

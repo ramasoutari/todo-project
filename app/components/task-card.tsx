@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
@@ -10,12 +10,14 @@ import "../styles/task-card.scss";
 import ConfirmationDialog from "./confirmation-dialog";
 import { ITask } from "../types/task";
 import { tasksAtom } from "../atoms/todo-atom";
+import { useLanguage } from "../context/language-context";
 
 type Props = {
   task: ITask;
 };
 
 function TaskCard({ task }: Props) {
+  const { t } = useLanguage();
   const setTasks = useSetAtom(tasksAtom);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
@@ -56,9 +58,10 @@ function TaskCard({ task }: Props) {
 
       <ConfirmationDialog
         isOpen={showConfirmDialog}
-        title="Confirm Removal"
-        message={`Are you sure you want to remove "${task.title}"? This action cannot be undone.`}
-        confirmText="Remove Task"
+        title={t("common:confirm_removal")}
+        message={t("tasks:confirm_removal_message", {title: task.title})}
+        confirmText={t("common:buttons.remove")}
+        cancelText={t('common:buttons.cancel')}
         onConfirm={confirmRemoveTask}
         onCancel={() => setShowConfirmDialog(false)}
       />

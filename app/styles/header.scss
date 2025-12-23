@@ -1,10 +1,9 @@
 $primary-bg: #f4f7f6;
 
 .app-header {
-  @apply w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 shadow-lg;
+  @apply w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 shadow-lg sticky;
   background-color: $primary-bg;
   margin-bottom: 50px;
-  position: sticky;
   top: 0;
   z-index: 100;
 
@@ -23,7 +22,6 @@ $primary-bg: #f4f7f6;
 
     .header-icon {
       @apply text-white;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
       font-size: 32px;
     }
 
@@ -49,18 +47,7 @@ $primary-bg: #f4f7f6;
 
   .header-right {
     .btn-language {
-      @apply flex  gap-1;
+      @apply flex text-white  gap-1;
     }
-  }
-}
-
-// RTL Support
-[dir="rtl"] {
-  .header-content {
-    direction: rtl;
-  }
-
-  .header-left {
-    flex-direction: row-reverse;
   }
 }
