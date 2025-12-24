@@ -1,6 +1,6 @@
 {
   "todo": "To Do",
-  "inProgress": "In Progress",
+  "in-progress": "In Progress",
   "done": "Done",
   "noTasks": "There are no tasks currently available."
 }

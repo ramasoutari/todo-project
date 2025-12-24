@@ -4,11 +4,11 @@ $todo-color: #14131370;
 $done-color: #5fee6b;
 
 .column {
-  @apply w-1/4 min-w-[400px] p-4 flex flex-col;
+  @apply w-full min-w-[280px] p-4 flex flex-col;
   height: calc(100vh - 200px);
 
   @media (max-width: 768px) {
-    @apply w-[90%];
+    @apply w-[30%];
   }
 
   .card-title {

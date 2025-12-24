@@ -14,12 +14,12 @@ import AddTask from "./components/add-task";
 import { useState } from "react";
 import { ITask } from "./types/task";
 import { taskStatus } from "./enum/task";
-import SimpleLoading from "./components/loading";
 import { tasksAtom } from "./atoms/todo-atom";
 
 function App() {
   const [tasks, setTasks] = useAtom(tasksAtom);
   const [activeTask, setActiveTask] = useState<ITask | null>();
+  const STATUSES = Object.values(taskStatus);
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
@@ -41,7 +41,6 @@ function App() {
     const taskId = active.id;
     const newStatus = over.id;
 
-    // Check if dropping in a column (not on another task)
     if (
       newStatus === "todo" ||
       newStatus === "in-progress" ||
@@ -70,17 +69,6 @@ function App() {
     setActiveTask(null);
   };
 
-  if (tasks.length === 0) {
-    return (
-      <SimpleLoading
-        fullScreen
-        type="spinner"
-        text="Loading your tasks..."
-        size="lg"
-      />
-    );
-  }
-
   return (
     <div className="app-container">
       <AddTask />
@@ -92,46 +80,20 @@ function App() {
         onDragCancel={handleDragCancel}
       >
         <div className="board">
-          <Column
-            title="todo"
-            id="todo"
-            tasks={tasks.filter((t) => t.status === "todo")}
-          />
-          <Column
-            title="inProgress"
-            id="in-progress"
-            tasks={tasks.filter((t) => t.status === "in-progress")}
-          />
-          <Column
-            title="done"
-            id="done"
-            tasks={tasks.filter((t) => t.status === "done")}
-          />
+          {STATUSES.map((status) => (
+            <Column
+              key={status}
+              id={status}
+              title={status}
+              tasks={tasks.filter((t) => t.status === status)}
+            />
+          ))}
         </div>
 
         <DragOverlay>
           {activeTask && (
-            <div
-              style={{
-                boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
-                minHeight: "90px",
-                backgroundColor: "whitesmoke",
-                borderRadius: "6px",
-                padding: "15px",
-                cursor: "grabbing",
-                width: "100%",
-                height: "auto",
-              }}
-            >
-              <p
-                style={{
-                  margin: 0,
-                  wordBreak: "break-word",
-                  whiteSpace: "normal",
-                }}
-              >
-                {activeTask.title}
-              </p>
+            <div className="drag-overlay-card">
+              <p className="drag-overlay-text">{activeTask.title}</p>
             </div>
           )}
         </DragOverlay>

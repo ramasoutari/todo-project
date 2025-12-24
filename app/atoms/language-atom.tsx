@@ -13,7 +13,6 @@ export const isLoading = atom(false);
 export const showConfirmation = atom(false);
 export const pendingLanguage = atom<Language | null>(null);
 
-// Updated t atom with interpolation support
 export const t = atom((get) => {
   const language = get(currentlanguage);
   
@@ -32,7 +31,6 @@ export const t = atom((get) => {
     const path = pathParts.join(":");
     const keys = path.split(".");
 
-    // Type-safe access to translations
     const langTranslations = translations[language];
     const namespaceTranslations = langTranslations[namespace as TranslationNamespace];
 
@@ -58,10 +56,8 @@ export const t = atom((get) => {
 
     if (typeof value !== "string") return key;
 
-    // Apply interpolation if params are provided
     if (params) {
       return value.replace(/\{\{(\w+(?:\.\w+)*)\}\}/g, (match, path) => {
-        // Support nested properties like {{task.title}} or {{user.name}}
         const pathKeys = path.split('.');
         let result: any = params;
         
@@ -96,7 +92,7 @@ export const languageActionsAtom = atom(
 
     const changeLanguageWithLoading = async (lang: Language) => {
       set(isLoading, true);
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      await new Promise((resolve) => setTimeout(resolve, 400));
       set(currentlanguage, lang);
       localStorage.setItem("language", lang);
       updateDocumentLanguage(lang);

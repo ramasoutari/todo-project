@@ -1,40 +1,41 @@
-'use client'
+"use client";
 
-import React from 'react';
+import React from "react";
+import "../styles/loading.scss";
 
 interface SimpleLoadingProps {
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: "sm" | "md" | "lg" | "xl";
   color?: string;
   text?: string;
   fullScreen?: boolean;
-  type?: 'spinner' | 'dots' | 'progress';
+  type?: "spinner" | "dots" | "progress" | "skeleton";
 }
 
 const SimpleLoading: React.FC<SimpleLoadingProps> = ({
-  size = 'md',
-  color = 'primary',
+  size = "md",
+  color = "primary",
   text,
   fullScreen = false,
-  type = 'spinner',
+  type = "spinner",
 }) => {
   const sizeClasses = {
-    sm: 'w-6 h-6',
-    md: 'w-8 h-8',
-    lg: 'w-12 h-12',
-    xl: 'w-16 h-16',
+    sm: "w-6 h-6",
+    md: "w-8 h-8",
+    lg: "w-12 h-12",
+    xl: "w-16 h-16",
   };
 
   const colorClasses = {
-    primary: 'border-blue-500',
-    secondary: 'border-gray-500',
-    success: 'border-green-500',
-    danger: 'border-red-500',
-    warning: 'border-yellow-500',
+    primary: "border-blue-500",
+    secondary: "border-gray-500",
+    success: "border-green-500",
+    danger: "border-red-500",
+    warning: "border-yellow-500",
   };
 
   const renderLoader = () => {
     switch (type) {
-      case 'dots':
+      case "dots":
         return (
           <div className="flex space-x-2">
             <div className="loading-dot bg-blue-500"></div>
@@ -42,17 +43,42 @@ const SimpleLoading: React.FC<SimpleLoadingProps> = ({
             <div className="loading-dot bg-blue-500 delay-300"></div>
           </div>
         );
-      
-      case 'progress':
+
+      case "progress":
         return (
           <div className="loading-progress">
             <div className="loading-progress-bar"></div>
           </div>
         );
-      
+
+      case "skeleton":
+        return (
+          <div className="w-full h-full">
+            <div className="skeleton-add-task">
+              <div className="skeleton skeleton-input"></div>
+              <div className="skeleton skeleton-button"></div>
+            </div>
+
+            <div className="board">
+              {["todo", "in-progress", "done"].map((column) => (
+                <div key={column} className="skeleton-column">
+                  <div className="skeleton skeleton-title"></div>
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="skeleton skeleton-card"></div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
       default:
         return (
-          <div className={`${sizeClasses[size]} border-4 ${colorClasses[color as keyof typeof colorClasses]} border-t-transparent rounded-full animate-spin`}></div>
+          <div
+            className={`${sizeClasses[size]} border-4 ${
+              colorClasses[color as keyof typeof colorClasses]
+            } border-t-transparent rounded-full animate-spin`}
+          ></div>
         );
     }
   };
@@ -70,12 +96,17 @@ const SimpleLoading: React.FC<SimpleLoadingProps> = ({
 
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 bg-white dark:bg-gray-900 bg-opacity-90 dark:bg-opacity-90 flex items-center justify-center z-50">
-        {content}
+      <div className="fixed inset-0 bg-white dark:bg-gray-900 bg-opacity-90 dark:bg-opacity-90 z-50">
+        {type === "skeleton" ? (
+          content
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            {content}
+          </div>
+        )}
       </div>
     );
   }
-
   return content;
 };
 

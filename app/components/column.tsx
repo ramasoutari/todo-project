@@ -12,6 +12,7 @@ type Props = {
 };
 
 function Column({ title, id, tasks }: Props) {
+  console.log("title",title)
   const {language} = useLanguage();
   const { setNodeRef } = useDroppable({
     id: id,
@@ -21,7 +22,7 @@ function Column({ title, id, tasks }: Props) {
   return (
     <div ref={setNodeRef} className={`column column--${id}`}>
       <div className={`card-title card-title--${id}`}>
-        {t(`column:${title}`).toUpperCase()}
+        {t(`column:${id}`).toUpperCase()}
         <sup  className={`
       count-dot
       ${language === 'ar' ? 'mr-2' : 'ml-2'}
