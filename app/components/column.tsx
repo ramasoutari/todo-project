@@ -8,11 +8,9 @@ import { useLanguage } from "../context/language-context";
 type Props = {
   tasks: ITask[];
   id: string;
-  title: string;
 };
 
-function Column({ title, id, tasks }: Props) {
-  console.log("title",title)
+function Column({ id, tasks }: Props) {
   const {language} = useLanguage();
   const { setNodeRef } = useDroppable({
     id: id,

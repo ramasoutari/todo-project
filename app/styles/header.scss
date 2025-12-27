@@ -1,15 +1,12 @@
 $primary-bg: #f4f7f6;
 
 .app-header {
-  @apply w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 shadow-lg sticky;
-  background-color: $primary-bg;
-  margin-bottom: 50px;
-  top: 0;
+  @apply w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 shadow-lg sticky top-0  mb-[50px] z-50;
+
   z-index: 100;
 
   .header-content {
-    @apply flex items-center justify-between px-6 py-4;
-    margin: 0 auto;
+    @apply flex items-center justify-between px-6 py-4 mx-auto;
 
     @media (max-width: 768px) {
       @apply flex-col gap-4 py-5;
@@ -27,7 +24,6 @@ $primary-bg: #f4f7f6;
     .header-title {
       h1 {
         @apply text-2xl font-bold text-white m-0;
-        letter-spacing: -0.5px;
 
         @media (max-width: 768px) {
           @apply text-xl;

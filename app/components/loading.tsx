@@ -4,35 +4,11 @@ import React from "react";
 import "../styles/loading.scss";
 
 interface SimpleLoadingProps {
-  size?: "sm" | "md" | "lg" | "xl";
-  color?: string;
   text?: string;
-  fullScreen?: boolean;
-  type?: "spinner" | "dots" | "progress" | "skeleton";
+  type?: "dots" | "progress" | "skeleton";
 }
 
-const SimpleLoading: React.FC<SimpleLoadingProps> = ({
-  size = "md",
-  color = "primary",
-  text,
-  fullScreen = false,
-  type = "spinner",
-}) => {
-  const sizeClasses = {
-    sm: "w-6 h-6",
-    md: "w-8 h-8",
-    lg: "w-12 h-12",
-    xl: "w-16 h-16",
-  };
-
-  const colorClasses = {
-    primary: "border-blue-500",
-    secondary: "border-gray-500",
-    success: "border-green-500",
-    danger: "border-red-500",
-    warning: "border-yellow-500",
-  };
-
+const SimpleLoading: React.FC<SimpleLoadingProps> = ({ text, type }) => {
   const renderLoader = () => {
     switch (type) {
       case "dots":
@@ -75,9 +51,7 @@ const SimpleLoading: React.FC<SimpleLoadingProps> = ({
       default:
         return (
           <div
-            className={`${sizeClasses[size]} border-4 ${
-              colorClasses[color as keyof typeof colorClasses]
-            } border-t-transparent rounded-full animate-spin`}
+            className={` border-4 border-t-transparent rounded-full animate-spin`}
           ></div>
         );
     }
@@ -94,20 +68,15 @@ const SimpleLoading: React.FC<SimpleLoadingProps> = ({
     </div>
   );
 
-  if (fullScreen) {
-    return (
-      <div className="fixed inset-0 bg-white dark:bg-gray-900 bg-opacity-90 dark:bg-opacity-90 z-50">
-        {type === "skeleton" ? (
-          content
-        ) : (
-          <div className="flex items-center justify-center h-full">
-            {content}
-          </div>
-        )}
-      </div>
-    );
-  }
-  return content;
+  return (
+    <div className="fixed inset-0 bg-white dark:bg-gray-900 bg-opacity-90 dark:bg-opacity-90 z-50">
+      {type === "skeleton" ? (
+        content
+      ) : (
+        <div className="flex items-center justify-center h-full">{content}</div>
+      )}
+    </div>
+  );
 };
 
 export default SimpleLoading;

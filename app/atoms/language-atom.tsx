@@ -1,11 +1,15 @@
-import { atom } from 'jotai';
-import { translations, type Language, type TranslationNamespace } from '../config/translations';
+import { atom } from "jotai";
+import {
+  translations,
+  type Language,
+  type TranslationNamespace,
+} from "../config/translations";
 
 const getInitialLanguage = (): Language => {
-  if (typeof window === 'undefined') return 'en';
-  
+  if (typeof window === "undefined") return "en";
+
   const saved = localStorage.getItem("language");
-  return (saved === 'en' || saved === 'ar') ? saved : 'en';
+  return saved === "en" || saved === "ar" ? saved : "en";
 };
 
 export const currentlanguage = atom<Language>(getInitialLanguage());
@@ -15,16 +19,11 @@ export const pendingLanguage = atom<Language | null>(null);
 
 export const t = atom((get) => {
   const language = get(currentlanguage);
-  
+
   return (key: string, params?: Record<string, any>): string => {
     const [namespace, ...pathParts] = key.split(":");
 
     if (!pathParts.length) {
-      if (process.env.NODE_ENV === 'development') {
-        console.warn(
-          `Translation key "${key}" is missing namespace. Use format "namespace:key"`
-        );
-      }
       return key;
     }
 
@@ -32,12 +31,10 @@ export const t = atom((get) => {
     const keys = path.split(".");
 
     const langTranslations = translations[language];
-    const namespaceTranslations = langTranslations[namespace as TranslationNamespace];
+    const namespaceTranslations =
+      langTranslations[namespace as TranslationNamespace];
 
     if (!namespaceTranslations) {
-      if (process.env.NODE_ENV === 'development') {
-        console.warn(`Namespace "${namespace}" not found for language: ${language}`);
-      }
       return key;
     }
 
@@ -47,9 +44,6 @@ export const t = atom((get) => {
       if (value && typeof value === "object" && k in value) {
         value = value[k];
       } else {
-        if (process.env.NODE_ENV === 'development') {
-          console.warn(`Translation not found: ${key} for language: ${language}`);
-        }
         return key;
       }
     }
@@ -58,13 +52,13 @@ export const t = atom((get) => {
 
     if (params) {
       return value.replace(/\{\{(\w+(?:\.\w+)*)\}\}/g, (match, path) => {
-        const pathKeys = path.split('.');
+        const pathKeys = path.split(".");
         let result: any = params;
-        
+
         for (const pk of pathKeys) {
           result = result?.[pk];
         }
-        
+
         return result !== undefined ? String(result) : match;
       });
     }
@@ -81,12 +75,18 @@ export const languageActionsAtom = atom(
       t: get(t),
     };
   },
-  (get, set, action: {
-    type: 'SET_LANGUAGE' | 'TOGGLE_LANGUAGE' | 'SHOW_CONFIRMATION' | 'CANCEL_CHANGE' | 'CONFIRM_CHANGE';
-    payload?: any;
-  }) => {
+  (
+    get,
+    set,
+    action: {
+      type: "TOGGLE_LANGUAGE" | "CANCEL_CHANGE" | "CONFIRM_CHANGE";
+    }
+  ) => {
     const updateDocumentLanguage = (lang: Language) => {
-      document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+      document.documentElement.setAttribute(
+        "dir",
+        lang === "ar" ? "rtl" : "ltr"
+      );
       document.documentElement.setAttribute("lang", lang);
     };
 
@@ -100,35 +100,23 @@ export const languageActionsAtom = atom(
     };
 
     switch (action.type) {
-      case 'SET_LANGUAGE':
-        const newLang = action.payload as Language;
-        if (get(currentlanguage) === newLang) return;
-        
-        set(pendingLanguage, newLang);
-        set(showConfirmation, true);
-        break;
-
-      case 'TOGGLE_LANGUAGE':
+      case "TOGGLE_LANGUAGE":
         const currentLang = get(currentlanguage);
         const toggledLang = currentLang === "en" ? "ar" : "en";
-        
+
         set(pendingLanguage, toggledLang);
         set(showConfirmation, true);
         break;
 
-      case 'SHOW_CONFIRMATION':
-        set(showConfirmation, action.payload);
-        break;
-
-      case 'CANCEL_CHANGE':
+      case "CANCEL_CHANGE":
         set(showConfirmation, false);
         set(pendingLanguage, null);
         break;
 
-      case 'CONFIRM_CHANGE':
+      case "CONFIRM_CHANGE":
         const pendingLang = get(pendingLanguage);
         if (!pendingLang) return;
-        
+
         set(showConfirmation, false);
         changeLanguageWithLoading(pendingLang);
         set(pendingLanguage, null);

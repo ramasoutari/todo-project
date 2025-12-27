@@ -7,19 +7,17 @@
 
   input {
     @apply px-3.75 py-2.5 border-[3px] border-gray-400 rounded-lg w-full max-w-[300px] focus:outline-none focus:border-blue-600;
-
-    transition: border-color 0.3s;
   }
 
   button {
-    @apply px-5 py-2.5 bg-blue-400/60 text-white rounded-lg cursor-pointer whitespace-nowrap;
+    @apply px-5 py-2.5 bg-blue-400 text-white rounded-lg cursor-pointer;
 
     &:hover {
-      background-color: darken(#718eaf, 2%);
+      @apply bg-blue-500
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 425px) {
     @apply flex-col;
 
     input {

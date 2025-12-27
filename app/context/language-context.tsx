@@ -16,10 +16,6 @@ import { Language } from "../config/translations";
 export function useLanguage() {
   const [state, dispatch] = useAtom(languageActionsAtom);
 
-  const setLanguage = async (lang: Language) => {
-    dispatch({ type: "SET_LANGUAGE", payload: lang });
-  };
-
   const toggleLanguage = async () => {
     dispatch({ type: "TOGGLE_LANGUAGE" });
   };
@@ -28,7 +24,6 @@ export function useLanguage() {
     language: state.language,
     t: state.t,
     toggleLanguage,
-    setLanguage,
     isLoading: state.isLoading,
   };
 }
@@ -64,30 +59,28 @@ function LanguageProviderContent({ children }: { children: ReactNode }) {
   };
 
   if (isCurrentLoading) {
-    return <SimpleLoading type="skeleton" />;
+    return <SimpleLoading type="dots" />;
   }
 
   return (
     <>
       {children}
 
-      {showConfirmationDialog &&
-        createPortal(
-          <ConfirmationDialog
-            isOpen={showConfirmationDialog}
-            confirmText={t(`header:switch`)}
-            cancelText={t("common:buttons.cancel")}
-            title={t("header:switch_language_title")}
-            onConfirm={handleConfirm}
-            onCancel={handleCancel}
-            message={
-              pendingSelectedLanguage === "ar"
-                ? t("header:messageToArabic")
-                : t("header:messageToEnglish")
-            }
-          />,
-          document.body
-        )}
+      {showConfirmationDialog && (
+        <ConfirmationDialog
+          isOpen={showConfirmationDialog}
+          confirmText={t(`header:switch`)}
+          cancelText={t("common:buttons.cancel")}
+          title={t("header:switch_language_title")}
+          onConfirm={handleConfirm}
+          onCancel={handleCancel}
+          message={
+            pendingSelectedLanguage === "ar"
+              ? t("header:messageToArabic")
+              : t("header:messageToEnglish")
+          }
+        />
+      )}
     </>
   );
 }

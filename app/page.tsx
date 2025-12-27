@@ -7,7 +7,6 @@ import {
   DragStartEvent,
   DragEndEvent,
 } from "@dnd-kit/core";
-import { arrayMove } from "@dnd-kit/sortable";
 import "./styles/main.scss";
 import Column from "./components/column";
 import AddTask from "./components/add-task";
@@ -20,7 +19,6 @@ function App() {
   const [tasks, setTasks] = useAtom(tasksAtom);
   const [activeTask, setActiveTask] = useState<ITask | null>();
   const STATUSES = Object.values(taskStatus);
-
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     const task = tasks.find((t) => t.id === active.id);
@@ -34,9 +32,6 @@ function App() {
     if (!over) {
       return;
     }
-
-    const activeTask = tasks.find((t) => t.id === active.id);
-    const overTask = tasks.find((t) => t.id === over.id);
 
     const taskId = active.id;
     const newStatus = over.id;
@@ -53,15 +48,6 @@ function App() {
             : task
         )
       );
-    }
-    // If dropping on another task, reorder within same column
-    else if (overTask && activeTask && activeTask.status === overTask.status) {
-      const oldIndex = tasks.findIndex((task) => task.id === active.id);
-      const newIndex = tasks.findIndex((task) => task.id === over.id);
-
-      if (oldIndex !== newIndex) {
-        setTasks((prev) => arrayMove(prev, oldIndex, newIndex));
-      }
     }
   };
 
@@ -84,7 +70,6 @@ function App() {
             <Column
               key={status}
               id={status}
-              title={status}
               tasks={tasks.filter((t) => t.status === status)}
             />
           ))}
