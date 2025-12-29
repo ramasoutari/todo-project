@@ -12,7 +12,6 @@ const getInitialLanguage = (): Language => {
   return saved === "en" || saved === "ar" ? saved : "en";
 };
 
-// Initialize document direction synchronously before React renders
 const initializeLanguage = (): Language => {
   const lang = getInitialLanguage();
 
@@ -25,7 +24,7 @@ const initializeLanguage = (): Language => {
 };
 
 export const currentlanguage = atom<Language>(initializeLanguage());
-export const isInitializing = atom(true); // New atom for initial load
+export const isInitializing = atom(true); 
 export const isLoading = atom(false);
 export const showConfirmation = atom(false);
 export const pendingLanguage = atom<Language | null>(null);
