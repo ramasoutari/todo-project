@@ -1,7 +1,7 @@
 $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
 .task-card {
-  @apply relative flex p-4 min-h-[90px] w-full rounded-lg;
+  @apply relative flex p-4 min-h-[120px] w-full rounded-lg;
 
   box-shadow: $shadow;
   transition: box-shadow 0.2s ease;
@@ -23,7 +23,7 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
   p {
     @apply m-0 text-gray-700 break-words whitespace-normal 
-           leading-relaxed flex-1 overflow-y-auto pr-1; // pr-1 = 0.25rem (4px)
+           leading-relaxed flex-1 overflow-y-auto pr-1 mb-2;
 
     color: #444;
     font-size: 0.95rem;

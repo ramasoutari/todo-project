@@ -16,7 +16,7 @@ type Props = {
 
 function Column({ id, tasks }: Props) {
   const { language } = useLanguage();
-  const { setNodeRef, isOver } = useDroppable({
+  const { setNodeRef } = useDroppable({
     id: id,
   });
   const { t } = useLanguage();

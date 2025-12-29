@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./components/header";
 import { LanguageProvider } from "./context/language-context";
@@ -17,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body style={{ height: "100vh" }}>
+      <body style={{ height: "100vh", backgroundColor: "#f4f7f6" }}>
         <LanguageProvider>
           <Header />
 
