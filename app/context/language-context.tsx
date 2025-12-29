@@ -62,7 +62,5 @@ function LanguageProviderContent({ children }: { children: ReactNode }) {
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  return (
-      <LanguageProviderContent>{children}</LanguageProviderContent>
-  );
+  return <LanguageProviderContent>{children}</LanguageProviderContent>;
 }

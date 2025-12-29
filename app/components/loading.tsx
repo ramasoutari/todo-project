@@ -51,7 +51,7 @@ const SimpleLoading: React.FC<SimpleLoadingProps> = ({ text, type }) => {
       default:
         return (
           <div
-            className={` border-4 border-t-transparent rounded-full animate-spin`}
+            className={` border-4 border-t-transparent rounded-full animate-spin w-10 h-10`}
           ></div>
         );
     }

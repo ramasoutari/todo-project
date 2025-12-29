@@ -48,7 +48,7 @@
 }
 
 .skeleton-add-task {
-  @apply flex justify-center items-center mb-3  flex-col;
+  @apply flex justify-center items-center mb-3  flex-col bg-white;
 
   .skeleton-input {
     height: 100px;

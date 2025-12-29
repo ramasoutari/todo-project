@@ -11,6 +11,7 @@ import { ITask } from "../types/task";
 import { tasksAtom } from "../atoms/todo-atom";
 import { useLanguage } from "../context/language-context";
 import { useSortable } from "@dnd-kit/sortable";
+import SimpleLoading from "./loading";
 
 type Props = {
   task: ITask;
@@ -20,14 +21,10 @@ function TaskCard({ task }: Props) {
   const { t } = useLanguage();
   const setTasks = useSetAtom(tasksAtom);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    isDragging,
-  } = useSortable({ id: task.id });
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useSortable({ id: task.id });
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -41,11 +38,21 @@ function TaskCard({ task }: Props) {
     setShowConfirmDialog(true);
   };
 
-  const confirmRemoveTask = () => {
+  const confirmRemoveTask = async () => {
+    setIsLoading(true);
+    await new Promise((r) => setTimeout(r, 400));
     setTasks((prev) => prev.filter((t) => t.id !== task.id));
+    setIsLoading(false);
     toast.success("Task Removed");
     setShowConfirmDialog(false);
   };
+
+  if (isLoading)
+    return (
+      <div style={{ zIndex: 100 }}>
+        <SimpleLoading type="skeleton" />
+      </div>
+    );
 
   return (
     <>
