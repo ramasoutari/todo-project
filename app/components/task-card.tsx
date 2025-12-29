@@ -11,6 +11,7 @@ import ConfirmationDialog from "./confirmation-dialog";
 import { ITask } from "../types/task";
 import { tasksAtom } from "../atoms/todo-atom";
 import { useLanguage } from "../context/language-context";
+import { useSortable } from "@dnd-kit/sortable";
 
 type Props = {
   task: ITask;
@@ -21,10 +22,13 @@ function TaskCard({ task }: Props) {
   const setTasks = useSetAtom(tasksAtom);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
 
-  const { attributes, listeners, setNodeRef, transform, isDragging } =
-    useDraggable({
-      id: task.id,
-    });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    isDragging,
+  } = useSortable({ id: task.id });
 
   const style = {
     transform: CSS.Translate.toString(transform),
@@ -59,9 +63,9 @@ function TaskCard({ task }: Props) {
       <ConfirmationDialog
         isOpen={showConfirmDialog}
         title={t("common:confirm_removal")}
-        message={t("tasks:confirm_removal_message", {title: task.title})}
+        message={t("tasks:confirm_removal_message", { title: task.title })}
         confirmText={t("common:buttons.remove")}
-        cancelText={t('common:buttons.cancel')}
+        cancelText={t("common:buttons.cancel")}
         onConfirm={confirmRemoveTask}
         onCancel={() => setShowConfirmDialog(false)}
       />

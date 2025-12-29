@@ -1,8 +1,7 @@
 "use client";
 
-import { Provider as JotaiProvider, useAtom, useSetAtom } from "jotai";
+import { Provider as JotaiProvider, useAtom } from "jotai";
 import { ReactNode, useEffect } from "react";
-import { createPortal } from "react-dom";
 import ConfirmationDialog from "../components/confirmation-dialog";
 import SimpleLoading from "../components/loading";
 import {
@@ -11,7 +10,6 @@ import {
   showConfirmation,
   pendingLanguage,
 } from "../atoms/language-atom";
-import { Language } from "../config/translations";
 
 export function useLanguage() {
   const [state, dispatch] = useAtom(languageActionsAtom);
@@ -32,23 +30,13 @@ function LanguageProviderContent({ children }: { children: ReactNode }) {
   const [isCurrentLoading] = useAtom(isLoading);
   const [showConfirmationDialog] = useAtom(showConfirmation);
   const [pendingSelectedLanguage] = useAtom(pendingLanguage);
-  const dispatch = useSetAtom(languageActionsAtom);
+  const [{ isInitializing }, dispatch] = useAtom(languageActionsAtom);
+
   const t = useLanguage().t;
 
   useEffect(() => {
-    const savedLanguage = localStorage.getItem("language") as Language;
-    if (savedLanguage && (savedLanguage === "en" || savedLanguage === "ar")) {
-      const updateDocumentLanguage = (lang: Language) => {
-        document.documentElement.setAttribute(
-          "dir",
-          lang === "ar" ? "rtl" : "ltr"
-        );
-        document.documentElement.setAttribute("lang", lang);
-      };
-
-      updateDocumentLanguage(savedLanguage);
-    }
-  }, []);
+    dispatch({ type: "FINISH_INIT" });
+  }, [dispatch]);
 
   const handleConfirm = async () => {
     dispatch({ type: "CONFIRM_CHANGE" });
@@ -58,8 +46,8 @@ function LanguageProviderContent({ children }: { children: ReactNode }) {
     dispatch({ type: "CANCEL_CHANGE" });
   };
 
-  if (isCurrentLoading) {
-    return <SimpleLoading type="dots" />;
+  if (isCurrentLoading || isInitializing) {
+    return <SimpleLoading type="skeleton" />;
   }
 
   return (

@@ -12,7 +12,20 @@ const getInitialLanguage = (): Language => {
   return saved === "en" || saved === "ar" ? saved : "en";
 };
 
-export const currentlanguage = atom<Language>(getInitialLanguage());
+// Initialize document direction synchronously before React renders
+const initializeLanguage = (): Language => {
+  const lang = getInitialLanguage();
+
+  if (typeof window !== "undefined") {
+    document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+    document.documentElement.setAttribute("lang", lang);
+  }
+
+  return lang;
+};
+
+export const currentlanguage = atom<Language>(initializeLanguage());
+export const isInitializing = atom(true); // New atom for initial load
 export const isLoading = atom(false);
 export const showConfirmation = atom(false);
 export const pendingLanguage = atom<Language | null>(null);
@@ -71,6 +84,7 @@ export const languageActionsAtom = atom(
   (get) => {
     return {
       language: get(currentlanguage),
+      isInitializing: get(isInitializing),
       isLoading: get(isLoading),
       t: get(t),
     };
@@ -79,7 +93,11 @@ export const languageActionsAtom = atom(
     get,
     set,
     action: {
-      type: "TOGGLE_LANGUAGE" | "CANCEL_CHANGE" | "CONFIRM_CHANGE";
+      type:
+        | "TOGGLE_LANGUAGE"
+        | "CANCEL_CHANGE"
+        | "CONFIRM_CHANGE"
+        | "FINISH_INIT";
     }
   ) => {
     const updateDocumentLanguage = (lang: Language) => {
@@ -99,7 +117,16 @@ export const languageActionsAtom = atom(
       set(isLoading, false);
     };
 
+    const finishInitWithDelay = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      set(isInitializing, false);
+    };
+
     switch (action.type) {
+      case "FINISH_INIT":
+        finishInitWithDelay();
+        break;
+
       case "TOGGLE_LANGUAGE":
         const currentLang = get(currentlanguage);
         const toggledLang = currentLang === "en" ? "ar" : "en";

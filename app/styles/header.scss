@@ -1,8 +1,5 @@
-$primary-bg: #f4f7f6;
-
 .app-header {
-  @apply w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 shadow-lg sticky top-0  mb-[50px] z-50;
-
+  @apply w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 shadow-lg sticky top-0  mb-[50px] z-50 max-h-[150px];
   z-index: 100;
 
   .header-content {
