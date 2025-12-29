@@ -1,52 +1,40 @@
 "use client";
 
-import { Provider as JotaiProvider, useAtom } from "jotai";
 import { ReactNode, useEffect } from "react";
 import ConfirmationDialog from "../components/confirmation-dialog";
 import SimpleLoading from "../components/loading";
-import {
-  languageActionsAtom,
-  isLoading,
-  showConfirmation,
-  pendingLanguage,
-} from "../atoms/language-atom";
+import { useLanguageStore } from "../zustand/language";
 
 export function useLanguage() {
-  const [state, dispatch] = useAtom(languageActionsAtom);
-
-  const toggleLanguage = async () => {
-    dispatch({ type: "TOGGLE_LANGUAGE" });
-  };
-
+  const language = useLanguageStore.useLanguage();
+  const t = useLanguageStore.useT();
+  const toggleLanguage = useLanguageStore.useToggleLanguage();
+  const isLoading = useLanguageStore.useIsLoading();
   return {
-    language: state.language,
-    t: state.t,
+    language,
+    t,
     toggleLanguage,
-    isLoading: state.isLoading,
+    isLoading,
   };
 }
 
 function LanguageProviderContent({ children }: { children: ReactNode }) {
-  const [isCurrentLoading] = useAtom(isLoading);
-  const [showConfirmationDialog] = useAtom(showConfirmation);
-  const [pendingSelectedLanguage] = useAtom(pendingLanguage);
-  const [{ isInitializing }, dispatch] = useAtom(languageActionsAtom);
-
-  const t = useLanguage().t;
+  const {
+    isInitializing,
+    isLoading,
+    showConfirmation,
+    pendingLanguage,
+    t,
+    finishInit,
+    confirmChange,
+    cancelChange,
+  } = useLanguageStore();
 
   useEffect(() => {
-    dispatch({ type: "FINISH_INIT" });
-  }, [dispatch]);
+    finishInit();
+  }, [finishInit]);
 
-  const handleConfirm = async () => {
-    dispatch({ type: "CONFIRM_CHANGE" });
-  };
-
-  const handleCancel = () => {
-    dispatch({ type: "CANCEL_CHANGE" });
-  };
-
-  if (isCurrentLoading || isInitializing) {
+  if (isLoading || isInitializing) {
     return <SimpleLoading type="skeleton" />;
   }
 
@@ -54,16 +42,16 @@ function LanguageProviderContent({ children }: { children: ReactNode }) {
     <>
       {children}
 
-      {showConfirmationDialog && (
+      {showConfirmation && (
         <ConfirmationDialog
-          isOpen={showConfirmationDialog}
+          isOpen={showConfirmation}
           confirmText={t(`header:switch`)}
           cancelText={t("common:buttons.cancel")}
           title={t("header:switch_language_title")}
-          onConfirm={handleConfirm}
-          onCancel={handleCancel}
+          onConfirm={confirmChange}
+          onCancel={cancelChange}
           message={
-            pendingSelectedLanguage === "ar"
+            pendingLanguage === "ar"
               ? t("header:messageToArabic")
               : t("header:messageToEnglish")
           }
@@ -75,8 +63,6 @@ function LanguageProviderContent({ children }: { children: ReactNode }) {
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   return (
-    <JotaiProvider>
       <LanguageProviderContent>{children}</LanguageProviderContent>
-    </JotaiProvider>
   );
 }

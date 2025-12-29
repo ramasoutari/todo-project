@@ -6,7 +6,7 @@
   }
 
   input {
-    @apply px-3.75 py-2.5 border-[3px] border-gray-400 rounded-lg w-full max-w-[300px] focus:outline-none focus:border-blue-600;
+    @apply px-3.75 py-2.5 border-[3px] border-gray-400 rounded-lg w-full max-w-[300px] focus:outline-none focus:border-blue-600 text-black;
   }
 
   button {

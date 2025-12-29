@@ -20,7 +20,7 @@ import { ITask } from "./types/task";
 import { taskStatus } from "./enum/task";
 import { tasksAtom } from "./atoms/todo-atom";
 import TaskCard from "./components/task-card";
-import { arrayMove, useSortable } from "@dnd-kit/sortable";
+import { arrayMove } from "@dnd-kit/sortable";
 
 function App() {
   const [tasks, setTasks] = useAtom(tasksAtom);
@@ -48,11 +48,9 @@ function App() {
 
     const overTask = tasks.find((t) => t.id === over.id);
 
-    // 🎯 CASE 1: Dropped on another task
     if (overTask) {
       const targetStatus = overTask.status;
 
-      // Same column → reorder
       if (activeTask.status === targetStatus) {
         const columnTasks = tasks.filter((t) => t.status === activeTask.status);
 
@@ -65,9 +63,7 @@ function App() {
           ...prev.filter((t) => t.status !== activeTask.status),
           ...reordered,
         ]);
-      }
-      // Different column → move into overTask’s column
-      else {
+      } else {
         setTasks((prev) =>
           prev.map((task) =>
             task.id === active.id ? { ...task, status: targetStatus } : task
@@ -78,7 +74,6 @@ function App() {
       return;
     }
 
-    // 🎯 CASE 2: Dropped on column (empty space)
     const targetStatus = over.id as taskStatus;
 
     setTasks((prev) =>
